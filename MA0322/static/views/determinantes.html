@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Determinantes – MA0322</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="/static/css/determinantes.css" />
+
+    <style>
+      /* Ajustes mínimos para que funcione sin tu CSS final */
+      body {
+        background: #f3f3f3;
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 25px;
+      }
+      body.dark {
+        background: #1e1e1e;
+        color: #ffffff;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0px 2px 6px #0003;
+        max-width: 880px;
+        margin: auto;
+      }
+      body.dark .card {
+        background: #2a2a2a;
+      }
+
+      .top-row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        align-items: center;
+      }
+
+      .field-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      select,
+      input[type="text"] {
+        padding: 6px;
+        font-size: 15px;
+        border-radius: 6px;
+        border: 1px solid #999;
+      }
+
+      body.dark select,
+      body.dark input[type="text"] {
+        background: #444;
+        color: white;
+        border: 1px solid #ccc;
+      }
+
+      .fila-matriz {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        justify-content: center;
+      }
+
+      .matriz-container {
+        margin: 20px auto;
+      }
+
+      .botones-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      button {
+        padding: 8px 15px;
+        font-size: 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: #0077ff;
+        color: white;
+      }
+      .btn-secondary {
+        background: #888;
+        color: white;
+      }
+      .btn-ghost {
+        background: #ddd;
+      }
+      body.dark .btn-ghost {
+        background: #555;
+        color: white;
+      }
+
+      .alert {
+        display: none;
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 15px;
+      }
+      .error {
+        background: #ffcccc;
+        color: #700000;
+      }
+      .success {
+        background: #ccffdd;
+        color: #005522;
+      }
+
+      .result-panel {
+        margin-top: 25px;
+        padding: 20px;
+        background: #fafafa;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        min-height: 100px;
+        white-space: pre-wrap;
+      }
+      body.dark .result-panel {
+        background: #333;
+        border-color: #666;
+      }
+
+      .input-error {
+        border: 2px solid red !important;
+      }
+      .error-msg {
+        color: red;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Calculadora de Determinantes</h1>
+
+    <div class="card">
+      <div class="top-row">
+        <div class="field-group">
+          <label for="tamano">Tamaño:</label>
+          <select id="tamano">
+            <option value="2">2 × 2</option>
+            <option value="3">3 × 3</option>
+            <option value="4">4 × 4</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label for="metodo">Método:</label>
+          <select id="metodo"><!-- esto se llena solo desde el js -->
+          </select>
+        </div>
+
+        <!--Campo visible solo para 4×4 cofactores -->
+        <div
+          id="filaColumnaRow"
+          style="display: flex; gap: 10px; align-items: center"
+        >
+          <div class="field-group">
+            <label for="modo">Desarrollar por:</label>
+            <select id="modo">
+              <option value="fila">Fila</option>
+              <option value="columna">Columna</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="indice">Índice:</label>
+            <select id="indice">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="btnTema" class="btn-ghost">Modo oscuro</button>
+      </div>
+
+      
+      <div id="matrizInputs" class="matriz-container"></div>
+
+      
+      <div class="botones-row">
+        <button id="btnCalcular" class="btn-primary">Calcular</button>
+        <button id="btnLimpiar" class="btn-secondary">Limpiar</button>
+        <button id="btnPasoAPaso" class="btn-ghost">Modo Entrenamiento</button>
+        <button id="btnDescargar" class="btn-ghost">Descargar pasos</button>
+      </div>
+
+      
+      <div id="alertaError" class="alert error"></div>
+      <div id="alertaOk" class="alert success"></div>
+
+      
+      <div class="result-panel">
+        <div class="result-header"><strong>Resultado y pasos:</strong></div>
+        <div id="pasos"></div>
+      </div>
+    </div>
+
+    <div id="visualPanel" class="visual-panel" style="display: none">
+      <h3>Visualización gráfica</h3>
+      <div id="visualContent"></div>
+    </div>
+
+    <script src="/static/js/determinantes.js"></script>
+  </body>
+</html>
