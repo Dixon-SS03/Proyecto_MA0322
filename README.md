@@ -1,10 +1,7 @@
 PROYECTO FINAL – MA0322 Álgebra Lineal
 
-Profesor: Randy Wynta Banton
-Repositorio GitHub: https://github.com/Dixon-SS03/Proyecto_MA0322.git
 
-Fecha: 28/11/2025
-Hora: 5:00 pm
+Repositorio GitHub: https://github.com/Dixon-SS03/Proyecto_MA0322.git
 
 Responsables del Proyecto
 
