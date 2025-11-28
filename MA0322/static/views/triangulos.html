@@ -1,144 +1,182 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Triángulos - Plano R²</title>
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f6f8fa;
-      margin: 0;
-      padding: 12px;
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-    }
+    <meta charset="UTF-8" />
+    <title>Triángulos - Plano R²</title>
 
-    .left {
-      width: 560px;
-    }
+    <!-- SIDEBAR -->
+    <link rel="stylesheet" href="/static/css/sidebar.css">
 
-    .controls {
-      margin-bottom: 8px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f8fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
 
-    button {
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-    }
+        .main-content {
+            margin-left: 230px; /* sidebar */
+            padding: 20px;
+            width: calc(100% - 230px);
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            box-sizing: border-box;
+        }
 
-    #canvasWrap {
-      border: 1px solid #bbb;
-      background: white;
-      padding: 8px;
-    }
+        .left {
+            width: 560px;
+        }
 
-    canvas {
-      display: block;
-      background: #fff;
-      width: 500px;
-      height: 500px;
-      cursor: crosshair;
-    }
+        .controls {
+            margin-bottom: 8px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-    .info {
-      margin-top: 8px;
-      font-size: 14px;
-      background: #fff;
-      padding: 8px;
-      border: 1px solid #e0e0e0;
-    }
+        button {
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+            background: white;
+        }
 
-    .right {
-      flex: 1;
-      max-width: 680px;
-    }
+        #canvasWrap {
+            border: 1px solid #bbb;
+            background: white;
+            padding: 8px;
+        }
 
-    #resultados {
-      background: #fff;
-      padding: 10px;
-      border: 1px solid #e0e0e0;
-      max-height: 560px;
-      overflow: auto;
-      font-size: 14px;
-    }
+        canvas {
+            display: block;
+            background: #fff;
+            width: 500px;
+            height: 500px;
+            cursor: crosshair;
+        }
 
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin: 6px 0;
-      font-size: 13px;
-    }
+        .info {
+            margin-top: 8px;
+            font-size: 14px;
+            background: #fff;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+        }
 
-    .label-small {
-      font-size: 12px;
-      color: #333;
-    }
+        .right {
+            flex: 1;
+            max-width: 680px;
+        }
 
-    .coords {
-      font-weight: bold;
-    }
-  </style>
+        #resultados {
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            max-height: 560px;
+            overflow: auto;
+            font-size: 14px;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin: 6px 0;
+            font-size: 13px;
+        }
+
+        .label-small {
+            font-size: 12px;
+            color: #333;
+        }
+
+        .coords {
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
 
-  <div class="left">
-    <h2>Plano R² — Seleccionar 3 vértices</h2>
+    <!-- =============== SIDEBAR =============== -->
+    <div class="sidebar">
+        <h2>MA0322</h2>
 
-    <div class="controls">
-      <button id="zoomPlus">+</button>
-      <button id="zoomMinus">-</button>
-      <span id="scaleLabel" class="label-small">Escala: ±10</span>
+        <a href="/static/views/determinantes.html">
+            Determinantes
+        </a>
 
-      <button id="clearBtn">Limpiar</button>
-      <button id="resetView">Reset vista</button>
-      <div style="margin-left:8px;">
-        <span class="label-small">Coordenadas clic:</span>
-        <div id="coordsList" class="coords"></div>
-      </div>
+        <a href="/static/views/triangulos.html" class="active">
+            Triángulos
+        </a>
+
+        <a href="/static/views/index.html">
+            Planos
+        </a>
     </div>
 
-    <div id="canvasWrap">
-      <canvas id="canvas" width="500" height="500"></canvas>
-    </div>
+    <!-- =============== CONTENIDO =============== -->
+    <div class="main-content">
 
-    <div class="info">
-      <div class="label-small">Instrucciones:</div>
-      <ul style="margin:6px 0 0 18px">
-        <li>Haz clic 3 veces para definir A, B, C en el plano.</li>
-        <li>El zoom cambia la escala ±N (mínimo ±10).</li>
-        <li>Pulsa "Limpiar" para eliminar puntos y resultados.</li>
-      </ul>
-    </div>
-  </div>
+        <div class="left">
+            <h2>Plano R² — Seleccionar 3 vértices</h2>
 
-  <div class="right">
-    <h2>Resultados y pasos</h2>
-    <div id="resultados">
-      <div id="summary">
-        <p><strong>Estado:</strong> Esperando 3 clics...</p>
-      </div>
+            <div class="controls">
+                <button id="zoomPlus">+</button>
+                <button id="zoomMinus">-</button>
+                <span id="scaleLabel" class="label-small">Escala: ±10</span>
 
-      <hr />
+                <button id="clearBtn">Limpiar</button>
+                <button id="resetView">Reset vista</button>
 
-      <div id="measurements">
-        <!-- Longitudes, ángulos, clasificaciones -->
-      </div>
+                <div style="margin-left:8px;">
+                    <span class="label-small">Coordenadas clic:</span>
+                    <div id="coordsList" class="coords"></div>
+                </div>
+            </div>
 
-      <hr />
+            <div id="canvasWrap">
+                <canvas id="canvas" width="500" height="500"></canvas>
+            </div>
 
-      <div>
-        <h4>Pasos (justificación y cálculos)</h4>
-        <pre id="steps">Aquí aparecerán los pasos detallados devueltos por el modelo.</pre>
-      </div>
-    </div>
-  </div>
+            <div class="info">
+                <div class="label-small">Instrucciones:</div>
+                <ul style="margin:6px 0 0 18px">
+                    <li>Haz clic 3 veces para definir A, B, C en el plano.</li>
+                    <li>El zoom cambia la escala ±N (mínimo ±10).</li>
+                    <li>Pulsa "Limpiar" para eliminar puntos y resultados.</li>
+                </ul>
+            </div>
+        </div>
 
-  <script src="/static/js/triangulos.js"></script>
+        <div class="right">
+            <h2>Resultados y pasos</h2>
+            <div id="resultados">
+                <div id="summary">
+                    <p><strong>Estado:</strong> Esperando 3 clics...</p>
+                </div>
+
+                <hr />
+
+                <div id="measurements"></div>
+
+                <hr />
+
+                <div>
+                    <h4>Pasos (justificación y cálculos)</h4>
+                    <pre id="steps">Aquí aparecerán los pasos detallados devueltos por el modelo.</pre>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- main-content -->
+
+    <script src="/static/js/triangulos.js"></script>
+
 </body>
 </html>
