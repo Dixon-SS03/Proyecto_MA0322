@@ -291,6 +291,29 @@ function enviarAlServidor() {
     // Esperamos claves: lados (obj), angulos (obj), clasificacion_lados, clasificacion_angulos, pasos (array), colineal (bool), mensaje opcional
     renderResultados(data);
     drawAll(data); // re-dibujar con etiquetas usando medidas
+    
+    // 🔥 GUARDAR EN HISTORIAL AQUÍ
+    if (!data.colineal && data.lados) {
+      // Calcular área y perímetro desde los lados
+      const a = Number(data.lados.a || 0);
+      const b = Number(data.lados.b || 0);
+      const c = Number(data.lados.c || 0);
+      const perimetro = a + b + c;
+      
+      // Área usando fórmula de Herón
+      const s = perimetro / 2;
+      const area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
+      
+      saveToHistory({
+        A: `(${puntos[0].x}, ${puntos[0].y})`,
+        B: `(${puntos[1].x}, ${puntos[1].y})`,
+        C: `(${puntos[2].x}, ${puntos[2].y})`
+      }, {
+        area: area,
+        perimetro: perimetro,
+        steps: data.pasos ? data.pasos.join('\n') : 'Sin pasos disponibles'
+      });
+    }
   })
   .catch((err) => {
     summary.innerHTML = `<p style="color:darkred"><strong>Error:</strong> ${err.message}</p>`;
@@ -357,6 +380,136 @@ function renderResultados(data) {
   }
 }
 
+// ============== FUNCIONES DE HISTORIAL ==============
+
+// Guardar triángulo en localStorage
+function saveToHistory(vertices, resultado) {
+    const historyKey = 'triangulos_history';
+    let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+    
+    const newEntry = {
+        id: Date.now(),
+        fecha: new Date().toLocaleString('es-ES'),
+        vertices: vertices,
+        area: resultado.area,
+        perimetro: resultado.perimetro,
+        steps: resultado.steps
+    };
+    
+    history.unshift(newEntry); // Agregar al inicio
+    
+    // Limitar a 10 triángulos
+    if (history.length > 10) {
+        history = history.slice(0, 10);
+    }
+    
+    localStorage.setItem(historyKey, JSON.stringify(history));
+    renderHistory();
+}
+
+// Renderizar historial
+function renderHistory() {
+    const historyList = document.getElementById('historyList');
+    const historyKey = 'triangulos_history';
+    const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+    
+    if (history.length === 0) {
+        historyList.innerHTML = '<div class="history-empty">No hay triángulos guardados aún</div>';
+        return;
+    }
+    
+    historyList.innerHTML = history.map((item, index) => `
+        <div class="history-item" data-index="${index}">
+            <div class="history-item-content">
+                <strong>A${item.vertices.A}, B${item.vertices.B}, C${item.vertices.C}</strong>
+                <div class="history-item-date">${item.fecha} • Área: ${item.area.toFixed(2)}</div>
+            </div>
+            <button class="history-item-delete" data-id="${item.id}">✕</button>
+        </div>
+    `).join('');
+    
+    // Agregar eventos
+    document.querySelectorAll('.history-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('history-item-delete')) {
+                const index = parseInt(item.dataset.index);
+                loadFromHistory(index);
+            }
+        });
+    });
+    
+    document.querySelectorAll('.history-item-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = parseInt(btn.dataset.id);
+            deleteFromHistory(id);
+        });
+    });
+}
+
+// Cargar triángulo desde historial
+function loadFromHistory(index) {
+    const historyKey = 'triangulos_history';
+    const history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+    const item = history[index];
+    
+    if (!item) return;
+    
+    // Convertir coordenadas de string a objeto {x, y}
+    const parseCoord = (str) => {
+        const nums = str.replace(/[()]/g, '').split(',').map(Number);
+        return { x: nums[0], y: nums[1] };
+    };
+    
+    const A = parseCoord(item.vertices.A);
+    const B = parseCoord(item.vertices.B);
+    const C = parseCoord(item.vertices.C);
+    
+    // Actualizar puntos actuales
+    puntos = [A, B, C];
+    
+    // Redibujar
+    drawAll();
+    
+    // Actualizar coordenadas
+    updateCoordsList();
+    
+    // Mostrar resultados guardados
+    summary.innerHTML = `
+        <p><strong>Triángulo cargado del historial</strong></p>
+        <p>A = ${item.vertices.A}, B = ${item.vertices.B}, C = ${item.vertices.C}</p>
+    `;
+    
+    measurements.innerHTML = `
+        <h4>Medidas:</h4>
+        <p><strong>Área:</strong> ${item.area.toFixed(4)} unidades²</p>
+        <p><strong>Perímetro:</strong> ${item.perimetro.toFixed(4)} unidades</p>
+    `;
+    
+    stepsPre.textContent = item.steps || 'Sin pasos guardados';
+}
+
+// Eliminar un triángulo del historial
+function deleteFromHistory(id) {
+    const historyKey = 'triangulos_history';
+    let history = JSON.parse(localStorage.getItem(historyKey) || '[]');
+    history = history.filter(item => item.id !== id);
+    localStorage.setItem(historyKey, JSON.stringify(history));
+    renderHistory();
+}
+
+// Limpiar todo el historial
+document.getElementById('clearHistory').addEventListener('click', () => {
+    if (confirm('¿Estás seguro de eliminar todo el historial?')) {
+        localStorage.removeItem('triangulos_history');
+        renderHistory();
+    }
+});
+
+// Cargar historial al iniciar
+document.addEventListener('DOMContentLoaded', () => {
+    renderHistory();
+});
 
 // Inicializar dibujo
 drawAll();

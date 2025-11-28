@@ -203,22 +203,110 @@
             color: #4a5568;
         }
 
+        /* Historial */
+        .history-section {
+            background: white;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .history-header h4 {
+            margin: 0;
+        }
+
+        #clearHistory {
+            background: #fc8181;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        #clearHistory:hover {
+            background: #f56565;
+        }
+
+        #historyList {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            background: #f7fafc;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid #4299e1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-item:hover {
+            background: #edf2f7;
+            transform: translateX(4px);
+        }
+
+        .history-item-content {
+            flex: 1;
+        }
+
+        .history-item-date {
+            font-size: 11px;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .history-item-delete {
+            background: #fc8181;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+
+        .history-item-delete:hover {
+            background: #f56565;
+        }
+
+        .history-empty {
+            color: #718096;
+            font-size: 13px;
+            text-align: center;
+            padding: 20px;
+        }
+
         /* Scrollbar personalizada */
-        #resultados::-webkit-scrollbar {
+        #resultados::-webkit-scrollbar,
+        #historyList::-webkit-scrollbar {
             width: 8px;
         }
 
-        #resultados::-webkit-scrollbar-track {
+        #resultados::-webkit-scrollbar-track,
+        #historyList::-webkit-scrollbar-track {
             background: #edf2f7;
             border-radius: 4px;
         }
 
-        #resultados::-webkit-scrollbar-thumb {
+        #resultados::-webkit-scrollbar-thumb,
+        #historyList::-webkit-scrollbar-thumb {
             background: #cbd5e0;
             border-radius: 4px;
         }
 
-        #resultados::-webkit-scrollbar-thumb:hover {
+        #resultados::-webkit-scrollbar-thumb:hover,
+        #historyList::-webkit-scrollbar-thumb:hover {
             background: #a0aec0;
         }
     </style>
@@ -273,12 +361,27 @@
                     <li>Haz clic 3 veces para definir A, B, C en el plano.</li>
                     <li>El zoom cambia la escala ±N (mínimo ±10).</li>
                     <li>Pulsa "Limpiar" para eliminar puntos y resultados.</li>
+                    <li>Los triángulos calculados se guardan automáticamente en el historial.</li>
                 </ul>
             </div>
         </div>
 
         <div class="right card">
             <h2>Resultados y pasos</h2>
+
+            <!-- HISTORIAL -->
+            <div class="history-section">
+                <div class="history-header">
+                    <h4>📚 Historial de Triángulos</h4>
+                    <button id="clearHistory">Limpiar historial</button>
+                </div>
+                <div id="historyList">
+                    <div class="history-empty">No hay triángulos guardados aún</div>
+                </div>
+            </div>
+
+            <hr />
+
             <div id="resultados">
                 <div id="summary">
                     <p><strong>Estado:</strong> Esperando 3 clics...</p>
