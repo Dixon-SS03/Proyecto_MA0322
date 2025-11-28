@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
 import json
 from controllers.planos_controller import calcular_interseccion_planos
+from utils.triangulos_service import resolver_triangulo
 
 class Main(BaseHTTPRequestHandler):
 
@@ -71,6 +72,31 @@ class Main(BaseHTTPRequestHandler):
                     'error': f'Error del servidor: {str(e)}'
                 }, ensure_ascii=False)
                 self.wfile.write(error_response.encode('utf-8'))
+        
+        # ------------------- TRIÁNGULOS ----------------------
+        elif self.path == "/triangulos":
+            try:
+                content_len = int(self.headers.get('Content-Length', 0))
+            except:
+                content_len = 0
+            body_bytes = self.rfile.read(content_len) if content_len > 0 else b"{}"
+            body_str = body_bytes.decode("utf-8") if body_bytes else "{}"
+
+            try:
+                datos = json.loads(body_str)
+            except Exception as e:
+                print("Error parseando JSON:", e)
+                self.send_error(400, "JSON inválido")
+                return
+
+            # Necesitas importar esta función o implementarla
+            # from controllers.triangulos_controller import resolver_triangulo
+            resultado = resolver_triangulo(datos)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write(json.dumps(resultado).encode("utf-8"))
         else:
             self.send_error(404, "Endpoint no encontrado")
 
