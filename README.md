@@ -8,11 +8,14 @@ Hora: 5:00 pm
 
 Responsables del Proyecto
 
-David Díaz López – C32569
+David Díaz López
+GitHub: https://github.com/Daviddl20
 
-Dixon Sánchez Soza – C29319
+Dixon Sánchez Soza
+GitHub: https://github.com/Dixon-SS03
 
-Grimaldi Solano Tijerino – C29346
+Grimaldi Solano Tijerino
+GitHub: https://github.com/guriSan25
 
 Descripción General del Proyecto
 
