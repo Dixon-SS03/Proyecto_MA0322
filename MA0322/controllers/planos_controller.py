@@ -1,9 +1,8 @@
-
-
 import sys
 import os
 from fractions import Fraction
 
+# Agregar el directorio padre al path para los imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from models.plano import Plano
