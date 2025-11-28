@@ -30,11 +30,11 @@ def signoCofactor(f, c):
     return signo
 
 
-#   DETERMINANTE 4×4 CON SALIDA VISUAL
+#   DETERMINANTE 4×4
 
 def determinante4x4(matriz, metodo_3x3, modo, indice):
     """
-    Calcula det(4×4) por cofactores con pasos visuales.
+    Calcula det(4×4) por cofactores
     metodo_3x3: "sarrus" o "cofactores"
     modo: "fila" o "columna"
     indice: 1–4
@@ -79,7 +79,7 @@ def determinante4x4(matriz, metodo_3x3, modo, indice):
             pasos.append({"tipo": "texto", "valor": "Cálculo del subdeterminante:"})
 
             for p in pasos_sub:
-                pasos.append(p)     # YA vienen en formato visual
+                pasos.append(p)     
 
             cofactor = sg * det_sub
             termino = aij * cofactor
