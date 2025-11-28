@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intersección de Planos - MA0322</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Intersección de Planos</h1>
+            <p>Proyecto MA0322 - Cálculo de intersección entre dos planos en el espacio</p>
+        </header>
+
+        <div class="content">
+            <!-- Botones de ejemplo -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <button type="button" class="boton-ejemplo" onclick="cargarEjemplo('interseccion')">
+                    Intersección
+                </button>
+                <button type="button" class="boton-ejemplo" onclick="cargarEjemplo('paralelos')">
+                  Paralelos
+                </button>
+                <button type="button" class="boton-ejemplo" onclick="cargarEjemplo('coincidentes')">
+                    Coincidentes
+                </button>
+                <button type="button" class="boton-ejemplo" onclick="cargarEjemplo('ordenAleatorio')">
+                    Orden Aleatorio
+                </button>
+            </div>
+            <div style="text-align: center; margin-bottom: 15px; color: #667eea; font-size: 0.9em;">
+                 <strong>Nota:</strong> Los ejemplos demuestran que puedes ingresar los coeficientes en cualquier orden
+            </div>
+
+            <form id="formularioPlanos" class="formulario-planos">
+                <!-- Plano 1 -->
+                <div class="plano-input">
+                    <h3>Plano 1</h3>
+                    <div class="campo-grupo">
+                        <label>Escribe la ecuación del plano:</label>
+                        <input type="text" 
+                               id="ecuacion1" 
+                               class="input-ecuacion" 
+                               placeholder="Ejemplo: 2x + 3y - z = 5 ó -3y + 2z = 10 + 3 - x" 
+                               required>
+                        <small class="hint">Variables y números en cualquier orden y lado del =</small>
+                    </div>
+                </div>
+
+                <!-- Plano 2 -->
+                <div class="plano-input">
+                    <h3>Plano 2</h3>
+                    <div class="campo-grupo">
+                        <label>Escribe la ecuación del plano:</label>
+                        <input type="text" 
+                               id="ecuacion2" 
+                               class="input-ecuacion" 
+                               placeholder="Ejemplo: x - y + 2z = 3 ó 5 = 2x + y - z" 
+                               required>
+                        <small class="hint">Variables y números en cualquier orden y lado del =</small>
+                    </div>
+                </div>
+            </form>
+
+            <button type="button" class="boton-calcular" onclick="calcularInterseccion()">
+                Calcular Intersección
+            </button>
+
+            <div id="resultados" class="resultados oculto">
+                <div class="resultado-titulo">
+                    Resultados
+                </div>
+                <div class="resultado-contenido" id="contenidoResultados">
+                </div>
+            </div>
+
+            <div id="error" class="error oculto">
+                <strong>Error:</strong>
+                <p id="mensajeError"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
