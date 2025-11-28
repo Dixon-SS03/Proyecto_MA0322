@@ -1,328 +1,226 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Determinantes 3×3 y 4×4 – MA0322</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Determinantes – MA0322</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="/static/css/determinantes.css" />
 
     <style>
-        :root {
-            --azul-ucr: #0f2167;
-            --verde-ucr: #166534;
-            --azul-boton: #1d4ed8;
-            --gris-fondo: #eef2ff;
-            --card-bg: #ffffff;
-            --texto: #111827;
-        }
+      /* Ajustes mínimos para que funcione sin tu CSS final */
+      body {
+        background: #f3f3f3;
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 25px;
+      }
+      body.dark {
+        background: #1e1e1e;
+        color: #ffffff;
+      }
 
-        body.dark {
-            --gris-fondo: #020617;
-            --card-bg: #0f172a;
-            --texto: #e5e7eb;
-        }
+      h1 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
 
-        * {
-            box-sizing: border-box;
-        }
+      .card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0px 2px 6px #0003;
+        max-width: 880px;
+        margin: auto;
+      }
+      body.dark .card {
+        background: #2a2a2a;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: var(--gris-fondo);
-            color: var(--texto);
-            padding: 24px;
-            transition: background 0.3s, color 0.3s;
-        }
+      .top-row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        align-items: center;
+      }
 
-        h1 {
-            text-align: center;
-            color: var(--azul-ucr);
-            margin-bottom: 4px;
-        }
+      .field-group {
+        display: flex;
+        flex-direction: column;
+      }
 
-        body.dark h1 {
-            color: #93c5fd;
-        }
+      select,
+      input[type="text"] {
+        padding: 6px;
+        font-size: 15px;
+        border-radius: 6px;
+        border: 1px solid #999;
+      }
 
-        .subtitle {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #4b5563;
-        }
+      body.dark select,
+      body.dark input[type="text"] {
+        background: #444;
+        color: white;
+        border: 1px solid #ccc;
+      }
 
-        body.dark .subtitle {
-            color: #9ca3af;
-        }
+      .fila-matriz {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+        justify-content: center;
+      }
 
-        .card {
-            width: 90%;
-            max-width: 980px;
-            margin: 0 auto;
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 22px 26px 26px;
-            box-shadow: 0 4px 18px rgba(15,23,42,0.25);
-            transition: background 0.3s;
-        }
+      .matriz-container {
+        margin: 20px auto;
+      }
 
-        .top-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px 24px;
-            align-items: center;
-            margin-bottom: 18px;
-        }
+      .botones-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+      }
 
-        .field-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+      button {
+        padding: 8px 15px;
+        font-size: 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
 
-        label {
-            font-weight: bold;
-            font-size: 14px;
-        }
+      .btn-primary {
+        background: #0077ff;
+        color: white;
+      }
+      .btn-secondary {
+        background: #888;
+        color: white;
+      }
+      .btn-ghost {
+        background: #ddd;
+      }
+      body.dark .btn-ghost {
+        background: #555;
+        color: white;
+      }
 
-        select {
-            padding: 6px 8px;
-            border-radius: 6px;
-            border: 1px solid #9ca3af;
-            font-size: 14px;
-        }
+      .alert {
+        display: none;
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 15px;
+      }
+      .error {
+        background: #ffcccc;
+        color: #700000;
+      }
+      .success {
+        background: #ccffdd;
+        color: #005522;
+      }
 
-        .theme-toggle {
-            margin-left: auto;
-        }
+      .result-panel {
+        margin-top: 25px;
+        padding: 20px;
+        background: #fafafa;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        min-height: 100px;
+        white-space: pre-wrap;
+      }
+      body.dark .result-panel {
+        background: #333;
+        border-color: #666;
+      }
 
-        .theme-toggle button {
-            padding: 6px 10px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            background: #111827;
-            color: #f9fafb;
-            font-size: 13px;
-        }
-
-        body.dark .theme-toggle button {
-            background: #e5e7eb;
-            color: #020617;
-        }
-
-        .matriz-container {
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .fila-matriz {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-
-        .fila-matriz input {
-            width: 70px;
-            padding: 6px;
-            text-align: center;
-            border-radius: 6px;
-            border: 1px solid #9ca3af;
-            font-size: 15px;
-        }
-
-        .botones-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 12px;
-            margin-bottom: 8px;
-        }
-
-        .btn {
-            flex: 1;
-            min-width: 160px;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: transform 0.05s ease, box-shadow 0.1s ease, background 0.2s;
-        }
-
-        .btn-primary {
-            background: var(--azul-boton);
-            color: #f9fafb;
-            box-shadow: 0 2px 6px rgba(37,99,235,0.4);
-        }
-
-        .btn-primary:hover {
-            background: #1e3a8a;
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: #e5e7eb;
-            color: #111827;
-        }
-
-        body.dark .btn-secondary {
-            background: #111827;
-            color: #e5e7eb;
-        }
-
-        .btn-secondary:hover {
-            background: #d1d5db;
-        }
-
-        .btn-ghost {
-            background: transparent;
-            border: 1px solid #9ca3af;
-            color: #111827;
-        }
-
-        body.dark .btn-ghost {
-            color: #e5e7eb;
-        }
-
-        .btn-ghost:hover {
-            background: rgba(148,163,184,0.2);
-        }
-
-        .alert {
-            display: none;
-            margin-top: 10px;
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .alert.error {
-            background: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-        }
-
-        .alert.success {
-            background: #dcfce7;
-            color: #166534;
-            border: 1px solid #bbf7d0;
-        }
-
-        .input-error {
-            border-color: #dc2626 !important;
-            background: #fee2e2 !important;
-        }
-
-        .error-msg {
-            color: #dc2626;
-            font-size: 12px;
-            margin-top: 2px;
-        }
-
-        .result-panel {
-            margin-top: 16px;
-        }
-
-        .result-header {
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        #pasos {
-            margin-top: 6px;
-            background: #020617;
-            color: #e5e7eb;
-            padding: 14px;
-            border-radius: 10px;
-            height: 320px;
-            overflow-y: auto;
-            white-space: pre-line;
-            font-family: Consolas, monospace;
-            font-size: 14px;
-        }
-
-        body.dark #pasos {
-            background: #000000;
-        }
-
-        @media (max-width: 720px) {
-            .card {
-                padding: 18px;
-            }
-            .fila-matriz input {
-                width: 54px;
-            }
-        }
+      .input-error {
+        border: 2px solid red !important;
+      }
+      .error-msg {
+        color: red;
+        font-size: 13px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
-    <h1>Determinantes 3×3 y 4×4</h1>
-    <div class="subtitle">Proyecto MA0322 – Parte III: Determinantes (Sarrus y Cofactores)</div>
+  <body>
+    <h1>Calculadora de Determinantes</h1>
 
     <div class="card">
-
-        <div class="top-row">
-
-            <div class="field-group">
-                <label for="tamano">Tamaño:</label>
-                <select id="tamano">
-                    <option value="3">3 × 3</option>
-                    <option value="4">4 × 4</option>
-                </select>
-            </div>
-
-            <div class="field-group">
-                <label for="metodo">Método:</label>
-                <select id="metodo">
-                    <option value="sarrus">Sarrus (solo 3x3)</option>
-                    <option value="cofactores">Cofactores</option>
-                </select>
-            </div>
-
-            <div class="field-group" id="filaColumnaRow" style="display:none;">
-                <label for="modo">Desarrollar por:</label>
-                <select id="modo">
-                    <option value="fila">Fila</option>
-                    <option value="columna">Columna</option>
-                </select>
-
-                <label for="indice">Índice:</label>
-                <select id="indice">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-            </div>
-
-            <div class="theme-toggle">
-                <button id="btnTema">🌙 Modo oscuro</button>
-            </div>
+      <div class="top-row">
+        <div class="field-group">
+          <label for="tamano">Tamaño:</label>
+          <select id="tamano">
+            <option value="2">2 × 2</option>
+            <option value="3">3 × 3</option>
+            <option value="4">4 × 4</option>
+          </select>
         </div>
 
-        <!-- Matriz -->
-        <div id="matrizInputs" class="matriz-container"></div>
-
-        <!-- Botones -->
-        <div class="botones-row">
-            <button id="btnCalcular" class="btn btn-primary">Calcular determinante</button>
-            <button id="btnLimpiar" class="btn btn-secondary">Limpiar matriz</button>
-            <button id="btnPasoAPaso" class="btn btn-ghost">Modo entrenamiento (paso a paso)</button>
-            <button id="btnDescargar" class="btn btn-ghost">Descargar pasos (.txt)</button>
+        <div class="field-group">
+          <label for="metodo">Método:</label>
+          <select id="metodo"><!-- esto se llena solo desde el js -->
+          </select>
         </div>
 
-        <div id="alertaError" class="alert error"></div>
-        <div id="alertaOk" class="alert success"></div>
+        <!--Campo visible solo para 4×4 cofactores -->
+        <div
+          id="filaColumnaRow"
+          style="display: flex; gap: 10px; align-items: center"
+        >
+          <div class="field-group">
+            <label for="modo">Desarrollar por:</label>
+            <select id="modo">
+              <option value="fila">Fila</option>
+              <option value="columna">Columna</option>
+            </select>
+          </div>
 
-        <div class="result-panel">
-            <div class="result-header">Resultado y pasos:</div>
-            <div id="pasos"></div>
+          <div class="field-group">
+            <label for="indice">Índice:</label>
+            <select id="indice">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
         </div>
 
+        <button id="btnTema" class="btn-ghost">Modo oscuro</button>
+      </div>
+
+      
+      <div id="matrizInputs" class="matriz-container"></div>
+
+      
+      <div class="botones-row">
+        <button id="btnCalcular" class="btn-primary">Calcular</button>
+        <button id="btnLimpiar" class="btn-secondary">Limpiar</button>
+        <button id="btnPasoAPaso" class="btn-ghost">Modo Entrenamiento</button>
+        <button id="btnDescargar" class="btn-ghost">Descargar pasos</button>
+      </div>
+
+      
+      <div id="alertaError" class="alert error"></div>
+      <div id="alertaOk" class="alert success"></div>
+
+      
+      <div class="result-panel">
+        <div class="result-header"><strong>Resultado y pasos:</strong></div>
+        <div id="pasos"></div>
+      </div>
+    </div>
+
+    <div id="visualPanel" class="visual-panel" style="display: none">
+      <h3>Visualización gráfica</h3>
+      <div id="visualContent"></div>
     </div>
 
     <script src="/static/js/determinantes.js"></script>
-</body>
+  </body>
 </html>

@@ -1,27 +1,24 @@
-from models.determinantes_model import calcular_determinante
+from models.determinantes.calcularDeterminante import calcularDeterminante
 
 
-def resolver_determinante(datos):
-    """
-    datos = {
-        "matriz": [[...]],
-        "metodo": "sarrus" / "cofactores",
-        "fila": 1  (solo 4x4),
-        "columna": 2 (solo 4x4)
-    }
-    """
+def resolverDeterminante(datos):
 
-    matriz = datos.get("matriz")
-    metodo = datos.get("metodo")
-    fila = datos.get("fila")
-    columna = datos.get("columna")
+    matriz  = datos.get("matriz")
+    metodo  = datos.get("metodo")
+    modo    = datos.get("modo")     # fila o columna
+    indice  = datos.get("indice")   # 1..4
 
     if matriz is None:
         return None, [], "No se recibió la matriz."
 
-    # Llamamos al modelo matemático
-    resultado, pasos, error = calcular_determinante(
-        matriz, metodo, fila, columna
+    if metodo is None:
+        return None, [], "No se recibió el método."
+
+    resultado, pasos, error = calcularDeterminante(
+        matriz,
+        metodo,
+        modo,
+        indice
     )
 
     return resultado, pasos, error
