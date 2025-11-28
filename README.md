@@ -130,6 +130,7 @@ Ruta:
 /triangulos
 
 Arquitectura del Proyecto
+```
 MA0322/
 ├── service.py
 ├── controllers/
@@ -163,7 +164,7 @@ MA0322/
         ├── app.js
         ├── triangulos.js
         └── determinantes.js
-
+```
 Requisitos del Sistema
 
 Python 3.8+
