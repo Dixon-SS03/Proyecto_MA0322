@@ -9,78 +9,175 @@
 
     <style>
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f6f8fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             margin: 0;
             padding: 0;
             display: flex;
+            min-height: 100vh;
         }
 
         .main-content {
-            margin-left: 230px; /* sidebar */
-            padding: 20px;
+            margin-left: 230px;
+            padding: 30px;
             width: calc(100% - 230px);
             display: flex;
-            gap: 20px;
+            gap: 30px;
             align-items: flex-start;
             box-sizing: border-box;
         }
 
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+        }
+
         .left {
-            width: 560px;
+            width: 600px;
+        }
+
+        h2 {
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 24px;
         }
 
         .controls {
-            margin-bottom: 8px;
+            margin-bottom: 16px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
             flex-wrap: wrap;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 8px;
         }
 
         button {
-            padding: 6px 12px;
+            padding: 8px 16px;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             border-radius: 6px;
-            border: 1px solid #aaa;
-            background: white;
+            border: none;
+            background: #4299e1;
+            color: white;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(66, 153, 225, 0.3);
+        }
+
+        button:hover {
+            background: #3182ce;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(66, 153, 225, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #zoomPlus, #zoomMinus {
+            width: 36px;
+            padding: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #clearBtn {
+            background: #fc8181;
+        }
+
+        #clearBtn:hover {
+            background: #f56565;
+        }
+
+        #resetView {
+            background: #9f7aea;
+        }
+
+        #resetView:hover {
+            background: #805ad5;
         }
 
         #canvasWrap {
-            border: 1px solid #bbb;
+            border: 2px solid #e2e8f0;
             background: white;
-            padding: 8px;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
         }
 
         canvas {
             display: block;
-            background: #fff;
+            background: #ffffff;
             width: 500px;
             height: 500px;
             cursor: crosshair;
+            border-radius: 4px;
         }
 
         .info {
-            margin-top: 8px;
+            margin-top: 16px;
             font-size: 14px;
-            background: #fff;
-            padding: 8px;
-            border: 1px solid #e0e0e0;
+            background: #edf2f7;
+            padding: 16px;
+            border-left: 4px solid #4299e1;
+            border-radius: 4px;
+        }
+
+        .label-small {
+            font-size: 13px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .coords {
+            font-weight: bold;
+            color: #2d3748;
+            margin-top: 4px;
+            font-size: 14px;
         }
 
         .right {
             flex: 1;
-            max-width: 680px;
+            max-width: 700px;
         }
 
         #resultados {
-            background: #fff;
-            padding: 10px;
-            border: 1px solid #e0e0e0;
-            max-height: 560px;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 600px;
             overflow: auto;
             font-size: 14px;
+        }
+
+        #summary {
+            background: white;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            border-left: 4px solid #48bb78;
+        }
+
+        #summary strong {
+            color: #2d3748;
+        }
+
+        #measurements {
+            background: white;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+
+        h4 {
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 12px;
         }
 
         pre {
@@ -88,15 +185,41 @@
             word-break: break-word;
             margin: 6px 0;
             font-size: 13px;
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            line-height: 1.6;
         }
 
-        .label-small {
-            font-size: 12px;
-            color: #333;
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 16px 0;
         }
 
-        .coords {
-            font-weight: bold;
+        ul {
+            margin: 6px 0 0 18px;
+            line-height: 1.8;
+            color: #4a5568;
+        }
+
+        /* Scrollbar personalizada */
+        #resultados::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #resultados::-webkit-scrollbar-track {
+            background: #edf2f7;
+            border-radius: 4px;
+        }
+
+        #resultados::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
+        }
+
+        #resultados::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
         }
     </style>
 </head>
@@ -123,7 +246,7 @@
     <!-- =============== CONTENIDO =============== -->
     <div class="main-content">
 
-        <div class="left">
+        <div class="left card">
             <h2>Plano R² — Seleccionar 3 vértices</h2>
 
             <div class="controls">
@@ -133,11 +256,11 @@
 
                 <button id="clearBtn">Limpiar</button>
                 <button id="resetView">Reset vista</button>
+            </div>
 
-                <div style="margin-left:8px;">
-                    <span class="label-small">Coordenadas clic:</span>
-                    <div id="coordsList" class="coords"></div>
-                </div>
+            <div style="margin-bottom: 16px;">
+                <span class="label-small">Coordenadas clic:</span>
+                <div id="coordsList" class="coords">Ninguna seleccionada</div>
             </div>
 
             <div id="canvasWrap">
@@ -145,8 +268,8 @@
             </div>
 
             <div class="info">
-                <div class="label-small">Instrucciones:</div>
-                <ul style="margin:6px 0 0 18px">
+                <div class="label-small" style="font-weight: 600; margin-bottom: 8px;">📐 Instrucciones:</div>
+                <ul>
                     <li>Haz clic 3 veces para definir A, B, C en el plano.</li>
                     <li>El zoom cambia la escala ±N (mínimo ±10).</li>
                     <li>Pulsa "Limpiar" para eliminar puntos y resultados.</li>
@@ -154,7 +277,7 @@
             </div>
         </div>
 
-        <div class="right">
+        <div class="right card">
             <h2>Resultados y pasos</h2>
             <div id="resultados">
                 <div id="summary">

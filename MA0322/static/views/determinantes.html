@@ -11,109 +11,241 @@
     <link rel="stylesheet" href="/static/css/determinantes.css" />
 
     <style>
-      /* Ajustes rápidos para convivir con el sidebar */
       body {
-        background: #f3f3f3;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      body.dark {
-        background: #1e1e1e;
-        color: #fff;
+        padding: 0;
+        min-height: 100vh;
       }
 
-      /* Todo el contenido ahora debe correrse a la derecha del sidebar */
+      body.dark {
+        background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+        color: #e2e8f0;
+      }
+
       .main-content {
-        margin-left: 230px;   /* ancho del sidebar */
-        padding: 25px;
+        margin-left: 230px;
+        padding: 30px;
+        box-sizing: border-box;
       }
 
       h1 {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 30px;
+        color: white;
+        font-size: 32px;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
       }
 
       .card {
         background: white;
         border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0px 2px 6px #0003;
-        max-width: 880px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
         margin: auto;
+        margin-bottom: 30px;
       }
+
       body.dark .card {
         background: #2a2a2a;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       }
 
       .top-row {
         display: flex;
         gap: 20px;
         flex-wrap: wrap;
-        margin-bottom: 20px;
-        align-items: center;
+        margin-bottom: 25px;
+        padding: 20px;
+        background: #f7fafc;
+        border-radius: 8px;
+        align-items: flex-end;
+      }
+
+      body.dark .top-row {
+        background: #1a1a1a;
       }
 
       .field-group {
         display: flex;
         flex-direction: column;
+        gap: 6px;
+        flex: 1;
+        min-width: 150px;
+      }
+
+      .field-group label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+      }
+
+      body.dark .field-group label {
+        color: #a0aec0;
       }
 
       select,
       input[type="text"] {
-        padding: 6px;
-        font-size: 15px;
+        padding: 10px 12px;
+        font-size: 14px;
         border-radius: 6px;
-        border: 1px solid #999;
+        border: 2px solid #e2e8f0;
+        background: white;
+        transition: all 0.2s;
+        font-family: inherit;
+      }
+
+      select:focus,
+      input[type="text"]:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
       }
 
       body.dark select,
       body.dark input[type="text"] {
-        background: #444;
+        background: #3a3a3a;
         color: white;
-        border: 1px solid #ccc;
+        border-color: #4a5568;
+      }
+
+      body.dark select:focus,
+      body.dark input[type="text"]:focus {
+        border-color: #4299e1;
       }
 
       .fila-matriz {
         display: flex;
-        gap: 10px;
-        margin-bottom: 10px;
+        gap: 12px;
+        margin-bottom: 12px;
         justify-content: center;
       }
 
+      .fila-matriz input {
+        width: 80px;
+        text-align: center;
+        font-weight: 500;
+      }
+
       .matriz-container {
-        margin: 20px auto;
+        margin: 25px auto;
+        padding: 25px;
+        background: #f7fafc;
+        border-radius: 8px;
+        border: 2px solid #e2e8f0;
+      }
+
+      body.dark .matriz-container {
+        background: #1a1a1a;
+        border-color: #4a5568;
       }
 
       .botones-row {
         display: flex;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
         justify-content: center;
-        margin-top: 20px;
+        margin-top: 25px;
       }
 
       button {
-        padding: 8px 15px;
-        font-size: 15px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
         border: none;
         border-radius: 6px;
         cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
       }
 
-      .btn-primary { background: #0077ff; color: white; }
-      .btn-secondary { background: #888; color: white; }
-      .btn-ghost { background: #ddd; }
-      body.dark .btn-ghost { background: #555; color: white; }
+      .btn-primary { 
+        background: #4299e1; 
+        color: white;
+        box-shadow: 0 2px 4px rgba(66, 153, 225, 0.3);
+      }
+
+      .btn-primary:hover {
+        background: #3182ce;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(66, 153, 225, 0.4);
+      }
+
+      .btn-secondary { 
+        background: #fc8181; 
+        color: white;
+        box-shadow: 0 2px 4px rgba(252, 129, 129, 0.3);
+      }
+
+      .btn-secondary:hover {
+        background: #f56565;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(252, 129, 129, 0.4);
+      }
+
+      .btn-ghost { 
+        background: #9f7aea;
+        color: white;
+        box-shadow: 0 2px 4px rgba(159, 122, 234, 0.3);
+      }
+
+      .btn-ghost:hover {
+        background: #805ad5;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(159, 122, 234, 0.4);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
 
       .alert {
         display: none;
-        padding: 10px;
-        border-radius: 6px;
-        margin-top: 15px;
+        padding: 14px 18px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        animation: slideIn 0.3s ease;
       }
-      .error { background: #ffcccc; color: #700000; }
-      .success { background: #ccffdd; color: #005522; }
 
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .error { 
+        background: #fed7d7;
+        color: #742a2a;
+        border-left: 4px solid #fc8181;
+      }
+
+      .success { 
+        background: #c6f6d5;
+        color: #22543d;
+        border-left: 4px solid #48bb78;
+      }
+
+      body.dark .error {
+        background: #742a2a;
+        color: #fed7d7;
+      }
+
+      body.dark .success {
+        background: #22543d;
+        color: #c6f6d5;
+      }
+
+      /* NO TOCAR: Sección de resultados y pasos */
       .result-panel {
         margin-top: 25px;
         padding: 20px;
@@ -128,8 +260,62 @@
         border-color: #666;
       }
 
-      .input-error { border: 2px solid red !important; }
-      .error-msg { color: red; font-size: 13px; }
+      .input-error { 
+        border: 2px solid #fc8181 !important;
+        animation: shake 0.3s;
+      }
+
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+      }
+
+      .error-msg { 
+        color: #fc8181;
+        font-size: 12px;
+        margin-top: 4px;
+        font-weight: 500;
+      }
+
+      #btnTema {
+        background: #4a5568;
+        color: white;
+      }
+
+      #btnTema:hover {
+        background: #2d3748;
+      }
+
+      #filaColumnaRow {
+        display: flex;
+        gap: 15px;
+        align-items: flex-end;
+        flex-wrap: wrap;
+      }
+
+      .visual-panel {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 900px;
+        margin: 30px auto;
+      }
+
+      body.dark .visual-panel {
+        background: #2a2a2a;
+      }
+
+      .visual-panel h3 {
+        color: #2d3748;
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+
+      body.dark .visual-panel h3 {
+        color: #e2e8f0;
+      }
     </style>
 </head>
 
@@ -155,12 +341,12 @@
     <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
     <div class="main-content">
 
-      <h1>Calculadora de Determinantes</h1>
+      <h1>🔢 Calculadora de Determinantes</h1>
 
       <div class="card">
         <div class="top-row">
           <div class="field-group">
-            <label for="tamano">Tamaño:</label>
+            <label for="tamano">Tamaño de la matriz</label>
             <select id="tamano">
               <option value="2">2 × 2</option>
               <option value="3">3 × 3</option>
@@ -169,13 +355,13 @@
           </div>
 
           <div class="field-group">
-            <label for="metodo">Método:</label>
+            <label for="metodo">Método de cálculo</label>
             <select id="metodo"></select>
           </div>
 
-          <div id="filaColumnaRow" style="display:flex;gap:10px;align-items:center">
+          <div id="filaColumnaRow">
             <div class="field-group">
-              <label for="modo">Desarrollar por:</label>
+              <label for="modo">Desarrollar por</label>
               <select id="modo">
                 <option value="fila">Fila</option>
                 <option value="columna">Columna</option>
@@ -183,7 +369,7 @@
             </div>
 
             <div class="field-group">
-              <label for="indice">Índice:</label>
+              <label for="indice">Índice</label>
               <select id="indice">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -193,16 +379,16 @@
             </div>
           </div>
 
-          <button id="btnTema" class="btn-ghost">Modo oscuro</button>
+          <button id="btnTema" class="btn-ghost">🌙 Modo oscuro</button>
         </div>
 
         <div id="matrizInputs" class="matriz-container"></div>
 
         <div class="botones-row">
-          <button id="btnCalcular" class="btn-primary">Calcular</button>
-          <button id="btnLimpiar" class="btn-secondary">Limpiar</button>
-          <button id="btnPasoAPaso" class="btn-ghost">Modo Entrenamiento</button>
-          <button id="btnDescargar" class="btn-ghost">Descargar pasos</button>
+          <button id="btnCalcular" class="btn-primary">✓ Calcular</button>
+          <button id="btnLimpiar" class="btn-secondary">✗ Limpiar</button>
+          <button id="btnPasoAPaso" class="btn-ghost">📚 Modo Entrenamiento</button>
+          <button id="btnDescargar" class="btn-ghost">💾 Descargar pasos</button>
         </div>
 
         <div id="alertaError" class="alert error"></div>
@@ -215,7 +401,7 @@
       </div>
 
       <div id="visualPanel" class="visual-panel" style="display:none">
-        <h3>Visualización gráfica</h3>
+        <h3>📊 Visualización gráfica</h3>
         <div id="visualContent"></div>
       </div>
 
